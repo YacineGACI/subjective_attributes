@@ -51,3 +51,11 @@ def parse_review_to_disk(business_id, reviews):
         Returns a long string containing @business_id and tab-separated reviews, ready to write to disk
     """
     return business_id + "\t" + "\t".join([parse_review(r) for r in reviews]) + "\n"
+
+
+def parse_business(business_line):
+    """
+        @business_line is a tab-separated string whose first element is the business_id and the rest are the list of reviews
+    """
+    parts = business_line.split('\t')
+    return parts[0], parts[1:]
