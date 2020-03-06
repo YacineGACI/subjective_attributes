@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     print("Dataset processed")
 
-    nn_model = MLPRegressor(hidden_layer_sizes=(300, 100), activation="relu", solver="adam", learning_rate="constant", learning_rate_init=0.001, max_iter=300)
+    nn_model = MLPRegressor(hidden_layer_sizes=(300, 200, 100, 50), activation="relu", solver="adam", learning_rate="adaptive", learning_rate_init=0.001, max_iter=500, tol=0.000001)
     nn_model.fit(X_train_input, Y_train_input)
 
     print("Training complete")
