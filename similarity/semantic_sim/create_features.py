@@ -1,6 +1,6 @@
-import features
-from data import read_raw_file, write_to_csv
-from embedding_model import *
+import similarity.semantic_sim.features as features
+from similarity.semantic_sim.data import read_raw_file, write_to_csv
+from similarity.semantic_sim.embedding_model import *
 
 
 
@@ -44,9 +44,9 @@ def get_features(s1, s2):
 
 if __name__ == "__main__":
 
-    Xtrain, Ytrain = read_raw_file("data/raw/sts-train.csv")
-    Xtest, Ytest= read_raw_file("data/raw/sts-test.csv")
-    Xdev, Ydev = read_raw_file("data/raw/sts-dev.csv")
+    Xtrain, Ytrain = read_raw_file("similarity/semantic_sim/data/raw/sts-train.csv")
+    Xtest, Ytest= read_raw_file("similarity/semantic_sim/data/raw/sts-test.csv")
+    Xdev, Ydev = read_raw_file("similarity/semantic_sim/data/raw/sts-dev.csv")
 
 
     train_processed = []
@@ -65,6 +65,6 @@ if __name__ == "__main__":
         dev_processed.append(get_features(x[0], x[1]) + [Ydev[i]])
     print("Finished processing the dev dataset")
 
-    write_to_csv("data/processed/train.csv", train_processed)
-    write_to_csv("data/processed/test.csv", test_processed)
-    write_to_csv("data/processed/dev.csv", dev_processed)
+    write_to_csv("similarity/semantic_sim/data/processed/train.csv", train_processed)
+    write_to_csv("similarity/semantic_sim/data/processed/test.csv", test_processed)
+    write_to_csv("similarity/semantic_sim/data/processed/dev.csv", dev_processed)

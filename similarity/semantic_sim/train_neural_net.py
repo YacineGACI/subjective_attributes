@@ -3,8 +3,8 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error # For evalua
 import pickle
 import numpy as np
 
-from data import read_raw_file
-from embedding_model import *
+from similarity.semantic_sim.data import read_raw_file
+from similarity.semantic_sim.embedding_model import *
 
 
 
@@ -21,8 +21,8 @@ def get_feature_vector(s1, s2):
 
 if __name__ == "__main__":
     
-    Xtrain, Ytrain = read_raw_file("data/raw/sts-train.csv")
-    Xtest, Ytest= read_raw_file("data/raw/sts-test.csv")
+    Xtrain, Ytrain = read_raw_file("similarity/semantic_sim/data/raw/sts-train.csv")
+    Xtest, Ytest= read_raw_file("similarity/semantic_sim/data/raw/sts-test.csv")
 
     X_train_input = np.concatenate([get_feature_vector(x[0], x[1]) for x in Xtrain])
     Y_train_input = np.array(Ytrain)
@@ -38,7 +38,7 @@ if __name__ == "__main__":
     print("Training complete")
 
     # Saving the trained models
-    with open("models/nn_model.pkl", "wb") as f:
+    with open("similarity/semantic_sim/models/nn_model.pkl", "wb") as f:
         pickle.dump(nn_model, f)
 
     # Evaluate the trained model

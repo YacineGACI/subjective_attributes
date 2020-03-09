@@ -2,15 +2,15 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_error # For evaluating the trained model
 import pickle
 
-from data import read_processed_data
+from similarity.semantic_sim.data import read_processed_data
 
 
 
 if __name__ == "__main__":
 
     # Read train & test datasets
-    Xtrain, Ytrain = read_processed_data("data/processed/train.csv")
-    Xtest, Ytest = read_processed_data("data/processed/test.csv")
+    Xtrain, Ytrain = read_processed_data("similarity/semantic_sim/data/processed/train.csv")
+    Xtest, Ytest = read_processed_data("similarity/semantic_sim/data/processed/test.csv")
 
     rf_model = RandomForestRegressor(n_estimators=100, max_depth=10, random_state=0)
     rf_model.fit(Xtrain, Ytrain)
@@ -18,7 +18,7 @@ if __name__ == "__main__":
     print("Training complete")
 
     # Saving the trained models
-    with open("models/rf_model.pkl", "wb") as f:
+    with open("similarity/semantic_sim/models/rf_model.pkl", "wb") as f:
         pickle.dump(rf_model, f)
 
     # Evaluate the trained model
