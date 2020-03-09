@@ -1,6 +1,6 @@
 import torch 
 
-from models import BERT_2Layer
+from similarity.conceptual_sim.models import BERT_2Layer
 
 
 def compute_conceptual_similarity(s1, s2):
@@ -15,7 +15,7 @@ def compute_conceptual_similarity(s1, s2):
 
 
 model = BERT_2Layer()
-model.load_state_dict(torch.load("models/bert-2layers-expanded-Adam_800_32_5e-05_0.0004_0.2_0.7.pt"))
+model.load_state_dict(torch.load("similarity/conceptual_sim/models/bert-2layers-expanded-Adam_800_32_5e-05_0.0004_0.2_0.7.pt"))
 model.eval()
 
 tokenizer = model.tokenizer

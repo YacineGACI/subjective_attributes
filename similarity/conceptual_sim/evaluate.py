@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import math
 
-from models import BERT_2Layer, BERT_2Layer_Pooling
+from similarity.conceptual_sim.models import BERT_2Layer, BERT_2Layer_Pooling
 
 
 def read_data(filename):
@@ -34,12 +34,12 @@ def test(input, attention_mask, seg, target):
 
 
 if __name__ == "__main__":
-    phrases, labels = read_data("data/sim_dataset_51_30000.csv")
+    phrases, labels = read_data("similarity/conceptual_sim/data/sim_dataset_51_30000.csv")
     num_test_data = len(phrases)
     print("Dataset read")
 
     model = BERT_2Layer()
-    model.load_state_dict(torch.load("models/bert-2layers-Adam_800_32_5e-05_0.0004_0.2_0.7.pt"))
+    model.load_state_dict(torch.load("similarity/conceptual_sim/models/bert-2layers-Adam_800_32_5e-05_0.0004_0.2_0.7.pt"))
     model.eval()
     print("Model loaded")
 

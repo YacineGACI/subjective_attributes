@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import random
 
-from models import BERT_2Layer_Pooling
+from similarity.conceptual_sim.models import BERT_2Layer_Pooling
 
 def read_training_data(filename):
     phrases = []
@@ -41,7 +41,7 @@ def test(input_1, input_2, attention_mask_1, attention_mask_2, target):
 
 if __name__ == "__main__":
 
-    phrases, labels = read_training_data("data/sim_dataset_no_expansion_51_10000.csv")
+    phrases, labels = read_training_data("similarity/conceptual_sim/data/sim_dataset_no_expansion_51_10000.csv")
     assert len(phrases) == len(labels)
     num_training_example = len(phrases)
     print('Training dataset read')
@@ -133,5 +133,5 @@ if __name__ == "__main__":
             test_loss = 0
 
     print("Training Complete")
-    torch.save(model.state_dict(), "models/bert-2layers-pooling-Adam_{}_{}_{}_{}_{}_{}.pt".format(n_epochs, minibatch_size, learning_rate, weight_decay, dropout, train_test_split))
+    torch.save(model.state_dict(), "similarity/conceptual_sim/models/bert-2layers-pooling-Adam_{}_{}_{}_{}_{}_{}.pt".format(n_epochs, minibatch_size, learning_rate, weight_decay, dropout, train_test_split))
     print("Model saved")
