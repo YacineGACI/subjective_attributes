@@ -4,7 +4,9 @@ from similarity.semantic_sim.embedding_model import *
 
 
 
-def get_features(s1, s2):
+def get_features(s1, s2, embedding="paragram"):
+    phrase_embedding = paragram_embedding if embedding == "paragram" else word2vec_embedding
+
     u = phrase_embedding(s1)
     v = phrase_embedding(s2)
 

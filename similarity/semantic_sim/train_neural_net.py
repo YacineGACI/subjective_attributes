@@ -8,14 +8,18 @@ from similarity.semantic_sim.embedding_model import *
 
 
 
-def get_feature_vector(s1, s2):
-    v1 = phrase_embedding(s1).reshape(1, -1)
-    v2 = phrase_embedding(s2).reshape(1, -1)
+def get_feature_vector(s1, s2, embedding="paragram"):
+    # Choose the embedding function
+    phrase_embedding = paragram_embedding if embedding == "paragram" else word2vec_embedding
+
+    v1 = phrase_embedding(s1.lower()).reshape(1, -1)
+    v2 = phrase_embedding(s2.lower()).reshape(1, -1)
 
     diff = np.abs(v1 - v2)
     hadamard = np.multiply(v1, v2)
 
-    return np.concatenate((v1, v2, diff, hadamard), axis=1)
+    # return np.concatenate((v1, v2, diff, hadamard), axis=1)
+    return np.concatenate((diff, hadamard), axis=1)
 
 
 
