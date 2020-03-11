@@ -1,19 +1,15 @@
 import pickle
-import os
+import os, time
 
-from aspect_opinion_extraction.pairing import *
 from data.data import read_large_file, parse_business
 from aspect_opinion_extraction.pairing import pairing
+from similarity.compute_similarity import similarity
 
 
 def make_tag(pair):
     aspect, opinion = pair
     return aspect + " " + opinion
 
-
-
-def compute_similarity(s1, s2):
-    return 0
 
 
 
@@ -32,7 +28,7 @@ def business_in_category(business_id, cats):
 
 def inverted_index(tags, review_filename, index_filename, theta, cats=None, layer=8, head=5, max_review_length=512):
     """
-        @tags: list of initial tags
+        @tags: list of initial tags to include in the inverted index
         @review_filename: file of business reviews per line
         @index_filename: file where to save the final inverted index
         @theta: threshold of similarity between tags
@@ -69,6 +65,7 @@ def inverted_index(tags, review_filename, index_filename, theta, cats=None, laye
 
     with open(review_filename, 'r') as f:
         for business in read_large_file(f):
+            start = time.time()
             business_id, reviews = parse_business(business)
 
             if cats is not None:
@@ -82,23 +79,27 @@ def inverted_index(tags, review_filename, index_filename, theta, cats=None, laye
                 pairs = pairing(r[:max_review_length], layer, head)
                 for p in pairs:
                     for i, t in enumerate(tags):
-                        if compute_similarity(t, make_tag(p)) > theta:
-                            if not current_tag_visited[i]:
-                                current_tag_visited[i] = True
-                                current_tag_counts[i] += 1
+                        try:
+                            if similarity(t, make_tag(p)) > theta:
+                                if not current_tag_visited[i]:
+                                    current_tag_visited[i] = True
+                                    current_tag_counts[i] += 1
+                        except:
+                            print("\nERROR ==> business_id = {}  |  pair = {}  | tag = {} | review = {}\n".format(business_id, make_tag(p), t, r))
 
             # Normalize the counts into percentages
-            current_tag_counts = [c/len(tags) for c in current_tag_counts]
+            current_tag_counts = [c/len(reviews) for c in current_tag_counts]
 
             for i, t in enumerate(tags):
                 if current_tag_counts[i] != 0:
                     tag_dict[t][business_id] = current_tag_counts[i]
             
-            print(business_id + " Done")
+
+            with open(index_filename, 'wb') as f:
+                pickle.dump(tag_dict, f)
+            print("{} Done in {} seconds".format(business_id, time.time() - start))
 
     
-    with open(index_filename, 'wb') as f:
-        pickle.dump(tag_dict, f)
 
 
 
@@ -111,4 +112,4 @@ if __name__ == "__main__":
         categories = pickle.load(f)
 
     tags = ["food great", "staff helpful", "plates clean", "price fair", "parking free"]
-    inverted_index(tags, "data/reviews/processed/reviews.txt", "data/index/index.pkl", 0.5)
+    inverted_index(tags, "data/reviews/processed/reviews.txt", "data/index/index.pkl", 0.4)
