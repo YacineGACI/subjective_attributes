@@ -113,8 +113,10 @@ with open("data/index/index.pkl", 'rb') as f:
 if __name__ == "__main__":
     print("Filtering began")
     user_tags = ["chicken wings delicious", "staff friendly"]
-    entities_per_tag = filter_entities(user_tags)
-    print(entities_per_tag)
-    subj_entities = combine_tags(entities_per_tag)
-    print(subj_entities)
+    selected_entities = ['ujmEBvifdJM6h6RLv4wQIg', 'NZnhc2sEQy3RmzKTZnqtwQ', 'mRUVMJkUGxrByzMQ2MuOpA']
+    print(filter_and_rank(user_tags, selected_entities))
+    # entities_per_tag = filter_entities(user_tags)
+    # print(entities_per_tag)
+    # subj_entities = combine_tags(entities_per_tag)
+    # print(subj_entities)
     
